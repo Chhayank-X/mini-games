@@ -155,10 +155,8 @@ setInterval(() => {
   adContainers.forEach(container => {
     const iframe = container.querySelector('iframe');
     if (iframe) {
-      const currentSrc = iframe.getAttribute('src');
-      if (currentSrc) {
-        iframe.setAttribute('src', currentSrc);
-      }
+      // Force reload by changing the query parameter of the iframe source
+      iframe.src = `./ad-banner.html?t=${Date.now()}`;
     }
   });
 }, 3000);
