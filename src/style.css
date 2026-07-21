@@ -60,7 +60,7 @@ body {
 
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 320px 1fr 200px;
+  grid-template-columns: 320px 1fr 320px;
   gap: 20px;
   width: 100%;
   height: 100%;
@@ -655,7 +655,7 @@ button.autoplay-display .value {
 
 /* Ad Sidebar Specific Styling */
 .ad-sidebar {
-  width: 200px;
+  width: 320px;
 }
 
 .ad-container {
