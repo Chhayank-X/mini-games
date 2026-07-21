@@ -921,10 +921,5 @@ button.autoplay-display .value {
   .banner-ad-large {
     margin-top: 4px !important;
   }
-  
-  /* Hide the second 300x250 banner ad on shorter laptop displays to fit everything perfectly on screen */
-  .banner-ad-large:nth-of-type(2) {
-    display: none !important;
-  }
 }
 
