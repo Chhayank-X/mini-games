@@ -118,12 +118,29 @@ const startNewRun = () => {
   game.startGame();
 };
 
+let lastPopupTime = 0;
+
 const handleStartClick = () => {
+  lastPopupTime = Date.now();
+  window.open('https://www.effectivecpmnetwork.com/cvjynzhf15?key=0a94fab7eb599bb285842ee1aeb3018f', '_blank');
   startNewRun();
 };
 
 btnStartGame.addEventListener('click', handleStartClick);
 btnRestartGame.addEventListener('click', handleStartClick);
+
+// 10-Second Interval Popunder Ad Trigger (tied to user interaction to bypass popup blockers)
+const triggerPopupAd = () => {
+  const now = Date.now();
+  if (now - lastPopupTime >= 10000) {
+    lastPopupTime = now;
+    window.open('https://www.effectivecpmnetwork.com/cvjynzhf15?key=0a94fab7eb599bb285842ee1aeb3018f', '_blank');
+  }
+};
+
+document.addEventListener('click', triggerPopupAd);
+document.addEventListener('keydown', triggerPopupAd);
+document.addEventListener('touchstart', triggerPopupAd);
 
 // Global render animation tick
 const tick = () => {
