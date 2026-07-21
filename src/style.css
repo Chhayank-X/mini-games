@@ -802,3 +802,112 @@ button.autoplay-display .value {
     display: none !important;
   }
 }
+
+/* Height-based optimizations for 1366x768 screens (viewport height ~600px-660px) */
+@media (max-height: 800px) {
+  .app-container {
+    padding: 10px;
+  }
+  
+  .dashboard-grid {
+    gap: 12px;
+  }
+  
+  .sidebar {
+    padding: 16px;
+    gap: 12px;
+  }
+  
+  .logo-area {
+    padding-bottom: 8px;
+  }
+  
+  .logo-area h1 {
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+  }
+  
+  .logo-area .subtitle {
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    margin-top: 2px;
+  }
+  
+  .menu-section h2 {
+    font-size: 0.95rem;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+  }
+  
+  .shop-grid {
+    gap: 8px;
+  }
+  
+  .shop-item {
+    padding: 6px 8px;
+    gap: 4px;
+  }
+  
+  .board-preview {
+    width: 32px;
+    height: 6px;
+  }
+  
+  .board-name {
+    font-size: 0.75rem;
+  }
+  
+  .board-price {
+    font-size: 0.7rem;
+  }
+  
+  .leaderboard-list {
+    gap: 6px;
+  }
+  
+  .leaderboard-item {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+  
+  .settings-controls {
+    gap: 8px;
+  }
+  
+  .btn-audio {
+    padding: 6px;
+    font-size: 0.75rem;
+  }
+  
+  .controls-guide {
+    padding: 8px;
+    margin-top: 4px;
+  }
+  
+  .controls-guide h3 {
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+  }
+  
+  .control-row {
+    font-size: 0.75rem;
+    margin-bottom: 2px;
+  }
+  
+  .ad-sidebar {
+    padding: 12px;
+  }
+  
+  .ad-label {
+    margin-bottom: 4px;
+  }
+  
+  .ad-container {
+    gap: 8px;
+  }
+  
+  .banner-ad-large {
+    margin-top: 8px !important;
+  }
+}
+
