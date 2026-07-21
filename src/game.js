@@ -1070,22 +1070,34 @@ class GameEngine {
           if (o.type === 'barricade') {
             // Must jump over. If player height is less than barrier top, CRASH!
             if (playerY < o.height) {
-              this.gameOver();
-              return;
+              if (this.autopilot) {
+                // Auto-save: Force player height to clear barricade
+                this.player.isJumping = true;
+                this.player.y = o.height + 0.1;
+                this.player.mesh.position.y = this.player.y;
+                this.player.vy = 0;
+              } else {
+                this.gameOver();
+                return;
+              }
             }
           } 
           else if (o.type === 'high_barrier') {
             // Must slide under.
             // If player is NOT sliding, or is jumping, they hit the top bar clearance
             if (!this.player.isSliding || playerY > 0.5) {
-              this.gameOver();
-              return;
+              if (this.autopilot) {
+                // Auto-save: Force slide animation
+                this.slide();
+              } else {
+                this.gameOver();
+                return;
+              }
             }
           } 
           else if (o.type === 'train') {
             // Train logic:
             // A. Jumped on top of the train:
-            // Check if player's feet (previous Y frame) were above the train ceiling height
             const trainTopY = o.height;
             if (playerY >= trainTopY - 0.4 && this.player.vy <= 0) {
               standingOnAnyTrain = true;
@@ -1098,9 +1110,19 @@ class GameEngine {
               }
             } 
             else {
-              // B. Frontal or side crash into train wall!
-              this.gameOver();
-              return;
+              if (this.autopilot) {
+                // Auto-save: Instantly place the player on top of the train
+                standingOnAnyTrain = true;
+                standingTrainHeight = trainTopY;
+                this.player.y = trainTopY;
+                this.player.mesh.position.y = this.player.y;
+                this.player.isJumping = false;
+                this.player.vy = 0;
+              } else {
+                // B. Frontal or side crash into train wall!
+                this.gameOver();
+                return;
+              }
             }
           }
         }
