@@ -409,6 +409,37 @@ body {
   text-shadow: 0 0 8px hsla(45, 100%, 50%, 0.5);
 }
 
+button.autoplay-display {
+  background: rgba(10, 10, 20, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border);
+  color: #fff;
+  border-radius: 12px;
+  cursor: pointer;
+  pointer-events: auto !important;
+  transition: all 0.2s ease;
+}
+
+button.autoplay-display:hover {
+  border-color: var(--color-neon-cyan);
+  box-shadow: var(--shadow-neon-cyan);
+}
+
+button.autoplay-display.active {
+  border-color: var(--color-neon-green);
+  box-shadow: var(--shadow-neon-green);
+}
+
+button.autoplay-display.active .value {
+  color: var(--color-neon-green) !important;
+  text-shadow: var(--shadow-neon-green) !important;
+}
+
+button.autoplay-display .value {
+  color: var(--color-neon-red);
+  text-shadow: var(--shadow-neon-red);
+}
+
 /* Screen Overlay system */
 .screen-overlay {
   position: absolute;

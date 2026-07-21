@@ -68,6 +68,7 @@ class GameEngine {
     // UI Event Callbacks
     this.onGameOverCallback = null;
     this.onStateChangeCallback = null;
+    this.autopilot = false;
   }
 
   init(containerId, onStateChange, onGameOver) {
@@ -794,12 +795,106 @@ class GameEngine {
     }
   }
 
+  runAutopilot(delta) {
+    if (!this.isRunRunning) return;
+    
+    const playerX = this.player.x;
+    const playerY = this.player.y;
+    const playerZ = this.player.mesh.position.z;
+
+    // Scan for obstacles in our path
+    let closestDanger = null;
+    let closestDangerZ = -999;
+    
+    for (let o of this.obstacles) {
+      const oz = o.mesh.position.z;
+      if (oz < -2 && oz > -45) {
+        if (o.lane === this.currentLane) {
+          if (oz > closestDangerZ) {
+            closestDangerZ = oz;
+            closestDanger = o;
+          }
+        }
+      }
+    }
+    
+    if (closestDanger) {
+      let dodged = false;
+      const leftLane = this.currentLane - 1;
+      const rightLane = this.currentLane + 1;
+      const laneOptions = [];
+      
+      if (leftLane >= 0) laneOptions.push({ lane: leftLane, dir: -1 });
+      if (rightLane <= 2) laneOptions.push({ lane: rightLane, dir: 1 });
+      
+      const safeOptions = laneOptions.filter(opt => {
+        return !this.obstacles.some(o => {
+          const oz = o.mesh.position.z;
+          return o.lane === opt.lane && oz < 5 && oz > -60;
+        });
+      });
+      
+      if (safeOptions.length > 0) {
+        const opt = safeOptions[Math.floor(Math.random() * safeOptions.length)];
+        this.changeLane(opt.dir);
+        dodged = true;
+      }
+      
+      if (!dodged) {
+        if (closestDanger.type === 'high_barrier') {
+          if (!this.player.isSliding) {
+            this.slide();
+          }
+        } else {
+          if (!this.player.isJumping) {
+            this.jump();
+          }
+        }
+      }
+    }
+    
+    // Auto-collect coins if safe
+    if (!closestDanger) {
+      let closestCoin = null;
+      let closestCoinZ = -999;
+      
+      for (let c of this.coinsList) {
+        const cz = c.mesh.position.z;
+        if (cz < -5 && cz > -35 && !c.collected) {
+          if (cz > closestCoinZ) {
+            closestCoinZ = cz;
+            closestCoin = c;
+          }
+        }
+      }
+      
+      if (closestCoin && closestCoin.lane !== this.currentLane) {
+        const coinLane = closestCoin.lane;
+        const isLaneSafe = !this.obstacles.some(o => {
+          const oz = o.mesh.position.z;
+          return o.lane === coinLane && oz < 5 && oz > -50;
+        });
+        
+        if (isLaneSafe) {
+          const dir = coinLane - this.currentLane;
+          const stepDir = Math.sign(dir);
+          this.changeLane(stepDir);
+        }
+      }
+    }
+  }
+
   // Physics, animations, and updates loop
   update(delta) {
     if (!this.isRunRunning) return;
     
     // Limit delta to avoid giant physics skips when running in background
     delta = Math.min(delta, 0.1);
+
+    // Call autopilot if active
+    if (this.autopilot) {
+      this.runAutopilot(delta);
+    }
     
     // 1. Increase game speed gradually
     if (this.gameSpeed < this.maxGameSpeed) {

@@ -12,6 +12,8 @@ const btnRestartGame = document.getElementById('btn-restart-game');
 const hudScore = document.getElementById('hud-score');
 const hudMultiplier = document.getElementById('hud-multiplier');
 const hudCoins = document.getElementById('hud-coins');
+const btnToggleAuto = document.getElementById('btn-toggle-auto');
+const hudAuto = document.getElementById('hud-auto');
 
 const summaryScore = document.getElementById('summary-score');
 const summaryCoins = document.getElementById('summary-coins');
@@ -40,6 +42,14 @@ btnToggleSfx.addEventListener('click', () => {
   btnToggleSfx.classList.toggle('active', !current);
   lblSfx.textContent = !current ? 'ON' : 'OFF';
   btnToggleSfx.blur();
+});
+
+btnToggleAuto.addEventListener('click', () => {
+  const current = game.autopilot;
+  game.autopilot = !current;
+  btnToggleAuto.classList.toggle('active', !current);
+  hudAuto.textContent = !current ? 'ON' : 'OFF';
+  btnToggleAuto.blur();
 });
 
 // Setup Hoverboard Shop item purchase and equipment
