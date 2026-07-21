@@ -148,3 +148,17 @@ const init = () => {
 window.addEventListener('load', () => {
   init();
 });
+
+// Auto-refresh banner ads every 3 seconds to optimize CPM impressions
+setInterval(() => {
+  const adContainers = document.querySelectorAll('.banner-ad-large');
+  adContainers.forEach(container => {
+    const iframe = container.querySelector('iframe');
+    if (iframe) {
+      const currentSrc = iframe.getAttribute('src');
+      if (currentSrc) {
+        iframe.setAttribute('src', currentSrc);
+      }
+    }
+  });
+}, 3000);
