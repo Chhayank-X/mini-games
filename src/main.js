@@ -1,0 +1,136 @@
+import './style.css';
+import { game } from './game.js';
+import { audio } from './audio.js';
+
+// DOM Elements
+const screenOverlay = document.getElementById('screen-overlay');
+const screenStart = document.getElementById('screen-start');
+const screenGameOver = document.getElementById('screen-gameover');
+const btnStartGame = document.getElementById('btn-start-game');
+const btnRestartGame = document.getElementById('btn-restart-game');
+
+const hudScore = document.getElementById('hud-score');
+const hudMultiplier = document.getElementById('hud-multiplier');
+const hudCoins = document.getElementById('hud-coins');
+
+const summaryScore = document.getElementById('summary-score');
+const summaryCoins = document.getElementById('summary-coins');
+const summaryHighScore = document.getElementById('summary-highscore');
+
+const btnToggleMusic = document.getElementById('btn-toggle-music');
+const lblMusic = document.getElementById('lbl-music');
+const btnToggleSfx = document.getElementById('btn-toggle-sfx');
+const lblSfx = document.getElementById('lbl-sfx');
+
+// Animation Loop handle
+let animationFrameId = null;
+
+// Audio settings toggles
+btnToggleMusic.addEventListener('click', () => {
+  const current = audio.musicEnabled;
+  audio.setMusicEnabled(!current);
+  btnToggleMusic.classList.toggle('active', !current);
+  lblMusic.textContent = !current ? 'ON' : 'OFF';
+  btnToggleMusic.blur(); // Remove focus highlight
+});
+
+btnToggleSfx.addEventListener('click', () => {
+  const current = audio.sfxEnabled;
+  audio.setSfxEnabled(!current);
+  btnToggleSfx.classList.toggle('active', !current);
+  lblSfx.textContent = !current ? 'ON' : 'OFF';
+  btnToggleSfx.blur();
+});
+
+// Setup Hoverboard Shop item purchase and equipment
+const setupShopListeners = () => {
+  const shopItems = document.querySelectorAll('.shop-item');
+  shopItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const boardId = item.getAttribute('data-board');
+      const cost = parseInt(item.getAttribute('data-cost'));
+      
+      if (game.ownedBoards.includes(boardId)) {
+        // Equip immediately if owned
+        game.equipBoard(boardId);
+        game.updateSidebarUI();
+      } else {
+        // Attempt to purchase
+        const success = game.buyBoard(boardId, cost);
+        if (!success) {
+          // Visual warning cue (flash red)
+          item.style.borderColor = 'hsl(0, 100%, 60%)';
+          item.style.boxShadow = '0 0 15px hsla(0, 100%, 60%, 0.8)';
+          audio.playTone(150, 'sawtooth', 0.2, 0.05, audio.ctx ? audio.ctx.currentTime : 0); // Buzz tone
+          
+          setTimeout(() => {
+            item.style.borderColor = '';
+            item.style.boxShadow = '';
+          }, 300);
+        }
+      }
+    });
+  });
+};
+
+// UI HUD Updates
+const onGameStateUpdate = (state) => {
+  // Pad score with leading zeros
+  if (hudScore) {
+    const padded = String(Math.floor(state.score)).padStart(6, '0');
+    hudScore.textContent = padded;
+  }
+  if (hudCoins) {
+    hudCoins.textContent = state.coins;
+  }
+  if (hudMultiplier) {
+    hudMultiplier.textContent = `x${state.multiplier}`;
+  }
+};
+
+// Game Over event
+const onGameOver = (summary) => {
+  screenOverlay.classList.remove('hidden');
+  screenStart.classList.add('hidden');
+  screenGameOver.classList.remove('hidden');
+  
+  if (summaryScore) summaryScore.textContent = summary.score.toLocaleString();
+  if (summaryCoins) summaryCoins.textContent = summary.coins.toLocaleString();
+  if (summaryHighScore) summaryHighScore.textContent = summary.highScore.toLocaleString();
+};
+
+// Start run trigger
+const startNewRun = () => {
+  screenOverlay.classList.add('hidden');
+  screenStart.classList.add('hidden');
+  screenGameOver.classList.add('hidden');
+  
+  game.startGame();
+};
+
+btnStartGame.addEventListener('click', startNewRun);
+btnRestartGame.addEventListener('click', startNewRun);
+
+// Global render animation tick
+const tick = () => {
+  const delta = game.clock.getDelta();
+  game.update(delta);
+  animationFrameId = requestAnimationFrame(tick);
+};
+
+// Boot Game
+const init = () => {
+  // Initialize ThreeJS canvas wrapper
+  game.init('canvas-wrapper', onGameStateUpdate, onGameOver);
+  
+  // Set up listeners for the hoverboard shop items
+  setupShopListeners();
+  
+  // Start animation frame loop
+  tick();
+};
+
+// Run after page finishes loading
+window.addEventListener('load', () => {
+  init();
+});

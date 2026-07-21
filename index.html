@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neon Runner - 3D Endless Subway Runner Game</title>
+    <meta name="description" content="Play Neon Runner, a premium 3D endless runner Subway Surfers clone. Dodge obstacles, ride hoverboards, and rack up high scores in a cyberpunk neon city." />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app" class="app-container">
+      <!-- Main Dashboard Grid -->
+      <main class="dashboard-grid">
+        
+        <!-- Sidebar Interface -->
+        <aside class="sidebar" id="sidebar-panel">
+          <header class="logo-area">
+            <h1 id="main-title">NEON RUNNER</h1>
+            <p class="subtitle">Endless 3D Subway Runner</p>
+          </header>
+
+          <!-- Shop Section -->
+          <section class="menu-section shop-section" id="shop-panel">
+            <h2><span class="icon">🛒</span> HOVERBOARD SHOP</h2>
+            <div class="shop-grid">
+              <div class="shop-item active" id="board-neon" data-board="neon" data-cost="0">
+                <div class="board-preview neon-green"></div>
+                <div class="board-info">
+                  <span class="board-name">Neon Green</span>
+                  <span class="board-status">Equipped</span>
+                </div>
+              </div>
+              <div class="shop-item locked" id="board-cyber" data-board="cyber" data-cost="100">
+                <div class="board-preview neon-purple"></div>
+                <div class="board-info">
+                  <span class="board-name">Cyber Purple</span>
+                  <span class="board-status">100 Coins</span>
+                </div>
+              </div>
+              <div class="shop-item locked" id="board-magma" data-board="magma" data-cost="250">
+                <div class="board-preview neon-red"></div>
+                <div class="board-info">
+                  <span class="board-name">Magma Red</span>
+                  <span class="board-status">250 Coins</span>
+                </div>
+              </div>
+              <div class="shop-item locked" id="board-gold" data-board="gold" data-cost="500">
+                <div class="board-preview neon-gold"></div>
+                <div class="board-info">
+                  <span class="board-name">Gold Edition</span>
+                  <span class="board-status">500 Coins</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Leaderboard Section -->
+          <section class="menu-section leaderboard-section" id="leaderboard-panel">
+            <h2><span class="icon">🏆</span> HIGH SCORES</h2>
+            <ol class="score-list" id="high-scores-list">
+              <li><span class="rank">1.</span> <span class="player-name">NEON_RUNNER</span> <span class="score-val">10,000</span></li>
+              <li><span class="rank">2.</span> <span class="player-name">CYBER_PUNK</span> <span class="score-val">5,000</span></li>
+              <li><span class="rank">3.</span> <span class="player-name">RETRO_RIDER</span> <span class="score-val">2,500</span></li>
+            </ol>
+          </section>
+
+          <!-- Settings Section -->
+          <section class="menu-section settings-section" id="settings-panel">
+            <h2><span class="icon">⚙️</span> SETTINGS</h2>
+            <div class="settings-controls">
+              <button id="btn-toggle-music" class="btn-setting active" type="button">
+                Music: <span id="lbl-music">ON</span>
+              </button>
+              <button id="btn-toggle-sfx" class="btn-setting active" type="button">
+                SFX: <span id="lbl-sfx">ON</span>
+              </button>
+            </div>
+          </section>
+          
+          <footer class="controls-guide">
+            <h3>🎮 CONTROLS</h3>
+            <ul>
+              <li><strong>Left / Right Arrow</strong>: Change Lane</li>
+              <li><strong>Up Arrow / Space</strong>: Jump</li>
+              <li><strong>Down Arrow</strong>: Slide / Roll</li>
+            </ul>
+          </footer>
+        </aside>
+
+        <!-- Main Game Area -->
+        <section class="game-container" id="game-viewport-container">
+          <!-- Canvas will be appended here by Three.js -->
+          <div id="canvas-wrapper" class="canvas-wrapper"></div>
+
+          <!-- HUD Overlay (Heads-up Display) -->
+          <div class="hud" id="game-hud">
+            <div class="hud-item score-display">
+              <span class="label">SCORE</span>
+              <span id="hud-score" class="value">000000</span>
+            </div>
+            <div class="hud-item multiplier-display">
+              <span class="label">MULT</span>
+              <span id="hud-multiplier" class="value">x1</span>
+            </div>
+            <div class="hud-item coins-display">
+              <span class="label">COINS</span>
+              <span id="hud-coins" class="value">0</span>
+            </div>
+          </div>
+
+          <!-- Screen Overlay (Start / Game Over) -->
+          <div class="screen-overlay" id="screen-overlay">
+            
+            <!-- Start Screen -->
+            <div class="screen-content" id="screen-start">
+              <h2 class="glowing-header">NEON RUNNER</h2>
+              <p class="tagline">Surf the tracks, dodge trains, survive the grid.</p>
+              <button id="btn-start-game" class="btn-primary" type="button">START RUN</button>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div class="screen-content hidden" id="screen-gameover">
+              <h2 class="glowing-header text-red">CRASHED!</h2>
+              <div class="stats-summary">
+                <div class="stat-row">
+                  <span>Score:</span>
+                  <span id="summary-score" class="value-highlight">0</span>
+                </div>
+                <div class="stat-row">
+                  <span>Coins:</span>
+                  <span id="summary-coins" class="value-highlight">0</span>
+                </div>
+                <div class="stat-row">
+                  <span>High Score:</span>
+                  <span id="summary-highscore" class="value-highlight-gold">0</span>
+                </div>
+              </div>
+              <button id="btn-restart-game" class="btn-primary" type="button">RUN AGAIN</button>
+            </div>
+
+          </div>
+
+          <!-- Mobile Controls Overlay (only visible on mobile) -->
+          <div class="mobile-controls-overlay" id="mobile-controls">
+            <div class="swipe-area-indicator">Swipe to Move / Jump / Slide</div>
+          </div>
+        </section>
+
+        <!-- Sponsor / Ad Sidebar -->
+        <aside class="sidebar ad-sidebar" id="ad-panel">
+          <section class="menu-section">
+            <h2><span class="icon">⚡</span> SPONSORS</h2>
+            <div class="ad-container">
+              <span class="ad-label">ADVERTISEMENT</span>
+              <!-- Mock Banner Ad 1 -->
+              <div class="mock-ad banner-ad-vertical">
+                <div class="ad-graphic-cyber">
+                  <span class="ad-text-large">CYBER GLIDE</span>
+                  <span class="ad-text-small">Custom Hoverboards</span>
+                  <button class="btn-ad" type="button">GET 50% OFF</button>
+                </div>
+              </div>
+              
+              <!-- Mock Banner Ad 2 -->
+              <div class="mock-ad banner-ad-square">
+                <div class="ad-graphic-synth">
+                  <span class="ad-text-glow">SYNTH FM</span>
+                  <span class="ad-text-sub">Retro Beats Live</span>
+                  <span class="ad-link">Listen Now</span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </aside>
+
+      </main>
+    </div>
+    
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
