@@ -1,5 +1,7 @@
 # ⚡ Neon Runner - 3D Endless Runner Game
 
+### 🚀 **[PLAY LIVE IN YOUR BROWSER DIRECTLY HERE](https://chhayank-x.github.io/mini-games/)**
+
 Welcome to **Neon Runner**, a premium 3D endless runner game (inspired by Subway Surfers) styled with a retro-futuristic cyberpunk aesthetic. The game runs within a sleek, responsive dashboard UI featuring glowing neon accents, an arcade-style HUD, custom shop integrations, and a dedicated ad/sponsor space.
 
 ---
