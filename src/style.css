@@ -815,99 +815,89 @@ button.autoplay-display .value {
   
   .sidebar {
     padding: 16px;
-    gap: 12px;
+    gap: 8px;
+    overflow: hidden !important;
   }
   
   .logo-area {
-    padding-bottom: 8px;
+    padding-bottom: 4px;
   }
   
   .logo-area h1 {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     letter-spacing: 1px;
   }
   
   .logo-area .subtitle {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     letter-spacing: 2px;
     margin-top: 2px;
   }
   
   .menu-section h2 {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     padding-bottom: 4px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   
   .shop-grid {
-    gap: 8px;
-  }
-  
-  .shop-item {
-    padding: 6px 8px;
-    gap: 4px;
-  }
-  
-  .board-preview {
-    width: 32px;
-    height: 6px;
-  }
-  
-  .board-name {
-    font-size: 0.75rem;
-  }
-  
-  .board-price {
-    font-size: 0.7rem;
-  }
-  
-  .leaderboard-list {
     gap: 6px;
   }
   
+  .shop-item {
+    padding: 5px 8px;
+    gap: 2px;
+  }
+  
+  .board-preview {
+    width: 28px;
+    height: 5px;
+  }
+  
+  .board-name {
+    font-size: 0.7rem;
+  }
+  
+  .board-price {
+    font-size: 0.65rem;
+  }
+  
+  .leaderboard-list {
+    gap: 4px;
+  }
+  
   .leaderboard-item {
-    padding: 6px 10px;
-    font-size: 0.85rem;
+    padding: 5px 8px;
+    font-size: 0.8rem;
   }
   
   .settings-controls {
-    gap: 8px;
+    gap: 6px;
   }
   
   .btn-audio {
-    padding: 6px;
-    font-size: 0.75rem;
+    padding: 5px;
+    font-size: 0.7rem;
   }
   
   .controls-guide {
-    padding: 8px;
-    margin-top: 4px;
-  }
-  
-  .controls-guide h3 {
-    font-size: 0.8rem;
-    margin-bottom: 4px;
-  }
-  
-  .control-row {
-    font-size: 0.75rem;
-    margin-bottom: 2px;
+    display: none !important;
   }
   
   .ad-sidebar {
-    padding: 12px;
+    padding: 8px 12px;
   }
   
   .ad-label {
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
   
   .ad-container {
-    gap: 8px;
+    gap: 4px;
   }
   
   .banner-ad-large {
-    margin-top: 8px !important;
+    margin-top: 4px !important;
   }
 }
 
