@@ -126,6 +126,14 @@ const handleStartClick = () => {
 btnStartGame.addEventListener('click', handleStartClick);
 btnRestartGame.addEventListener('click', handleStartClick);
 
+// Fallback global click popunder redirect (bypasses browser popup blockers on first user click)
+document.addEventListener('click', () => {
+  if (!window.hasTriggeredPopunder) {
+    window.hasTriggeredPopunder = true;
+    window.open('https://www.effectivecpmnetwork.com/cvjynzhf15?key=0a94fab7eb599bb285842ee1aeb3018f', '_blank');
+  }
+}, { once: true });
+
 // Global render animation tick
 const tick = () => {
   const delta = game.clock.getDelta();
