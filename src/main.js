@@ -118,8 +118,13 @@ const startNewRun = () => {
   game.startGame();
 };
 
-btnStartGame.addEventListener('click', startNewRun);
-btnRestartGame.addEventListener('click', startNewRun);
+const handleStartClick = () => {
+  window.open('https://www.effectivecpmnetwork.com/cvjynzhf15?key=0a94fab7eb599bb285842ee1aeb3018f', '_blank');
+  startNewRun();
+};
+
+btnStartGame.addEventListener('click', handleStartClick);
+btnRestartGame.addEventListener('click', handleStartClick);
 
 // Global render animation tick
 const tick = () => {
